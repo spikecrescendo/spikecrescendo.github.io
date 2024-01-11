@@ -1,0 +1,127 @@
+/* root */
+:root {
+    --bg-color: rgb(20, 20, 20);
+    --text-color: white;
+    --blue: rgb(0, 136, 255);
+    --red: rgb(251, 52, 52);
+}
+
+@media only screen and (max-width: 1400px) {
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+}
+
+.team {
+    width: 26vw;
+    height: 4vh;
+    margin-right: 1vw;
+    margin-left: 1vw;
+    border-radius: 1vh;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 2vw;
+    padding-left: 2vw;
+}
+
+#blue-alliance, #red-alliance {
+    display: flex;
+    width: 85vw;
+    flex-direction: column;
+    padding-top: 1vh;
+    border-radius: 2vh;
+    height: 100%;
+    align-items: center;
+    margin-top: 1.5vh;
+    margin-left: 7.5vw;
+}
+
+#blue-teams, #red-teams {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+
+#blue-alliance {
+    background-color: var(--blue);
+    margin-right: 2vw;
+}
+
+.blue-robots, .red-robots {
+    display: flex;
+    justify-content: center;
+    width: 80vw;
+}
+
+.total {
+    font-size: 3vw;
+}
+
+#red-alliance {
+    background-color: var(--red);
+    margin-left: 2vw;
+    justify-content: right;
+}
+
+.robot {
+    display: inline-flex;
+    width: 35%;
+    flex-direction: column;
+    align-items: center;
+}
+
+.num-input {
+    width: 1.5vw;
+}
+
+.span {
+    white-space: nowrap;
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    height: 3vh;
+    margin-left: 1vw;
+    margin-right: 1vw;
+    margin-bottom: 0.25vw;
+    font-size: 1vh;
+    align-items: center;
+}
+
+.span input {
+    float: right;
+    border: 1px solid lightgray;
+    border-radius: 10%;
+    width: 4.5vw;
+    height: 2vh;
+    text-align: center;
+    font-size: 1.5vh;
+}
+
+.span .checkbox {
+    width: 4vw;
+    height: 4vw;
+    border-radius: 15%;
+    border: 1px solid lightgray;
+}
+
+.nospecific {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+select {
+    font-family: 'Inter', sans-serif;
+    font-size: 1vh;
+    width: 20vw;
+    height: 2vh;
+    border-radius: 0.5vw;
+    margin-top: 0.5vw;
+}
+}
