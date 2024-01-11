@@ -1,102 +1,133 @@
+class Alliance {
+    constructor() {
+        this.data = {
+            teams: [],
+            score: 0,
+            coopertition: false,
+            rankingPoints: 0,
+            auto: {
+                leave: false,
+                notesAmp: 0,
+                notesSpeaker: 0
+            },
+            teleop: {
+                notesAmp: 0,
+                notesSpeaker: 0,
+                notesAmplified: 0
+            },
+            endgame: {
+                notesTrap: 0,
+                spotlightCenter: false,
+                spotlightLeft: false,
+                spotlightRight: false
+            }
+        }
+    }
 
-// Auto
-const leave = 2; const autoAmp = 2; const autoSpeaker = 5;
-// Teleop
-const teleAmp = 1; const teleSpeaker = 2; const ampSpeaker = 5;
-// Endgame
-const park = 2; const stage = 3; const spotlightBonus = 1; const harmony = 2; const trap = 5;
-// RP
-const melody = 18; const coopMelody = 15; const ensemblePoints = 10; const ensembleRobots = 2;
-
-
-
-
-
-let blueAlliance = {
-    teams: [],
-    score: 0,
-    coopertition: false,
-    rankingPoints: 0,
-    melody: false,
-    ensemble: false,
-    auto: {
-        autoPoints: 0,
-        leaveCount: 0,
-        notesAmp: 0,
-        notesSpeaker: 0
-    },
-    teleop: {
-        teleopPoints: 0,
-        notesAmp: 0,
-        notesSpeaker: 0,
-        notesAmplified: 0
-    },
-    endgame: {
-        notesTrap: 0,
-        spotlightCenter: false,
-        spotlightLeft: false,
-        spotlightRight: false,
-        endPlacements: [],
-        onstageCount: 0,
-        endgamePoints: 0
+    static blankData = {
+        teams: [],
+        score: 0,
+        coopertition: false,
+        rankingPoints: 0,
+        auto: {
+            leave: false,
+            notesAmp: 0,
+            notesSpeaker: 0
+        },
+        teleop: {
+            notesAmp: 0,
+            notesSpeaker: 0,
+            notesAmplified: 0
+        },
+        endgame: {
+            notesTrap: 0,
+            spotlightCenter: false,
+            spotlightLeft: false,
+            spotlightRight: false
+        }
     }
 }
-function calculateBlue(){
-    // Count Leave Points
-    if (document.getElementById('blue-robot1-auto-leave').checked){blueAlliance.auto.leaveCount++;}
-    if (parseInt(document.getElementById('blue-robot2-auto-leave').value), 10){blueAlliance.auto.leaveCount++;}
-    if (parseInt(document.getElementById('blue-robot3-auto-leave').value), 10){blueAlliance.auto.leaveCount++;}
 
-    blueAlliance.auto.notesAmp = 
-    parseInt(document.getElementById('blue-robot1-auto-notes-amp').value, 10) + 
-    parseInt(document.getElementById('blue-robot2-auto-notes-amp').value, 10) + 
-    parseInt(document.getElementById('blue-robot3-auto-notes-amp').value, 10);
+let blueAlliance = new Alliance();
+let redAlliance = new Alliance();
 
-    blueAlliance.auto.notesSpeaker =
-    parseInt(document.getElementById('blue-robot1-auto-notes-speaker').value, 10) + 
-    parseInt(document.getElementById('blue-robot2-auto-notes-speaker').value, 10) + 
-    parseInt(document.getElementById('blue-robot3-auto-notes-speaker').value, 10);
-
-    blueAlliance.teleop.notesAmp = 
-    parseInt(document.getElementById('blue-robot1-notes-amp').value, 10) + 
-    parseInt(document.getElementById('blue-robot2-notes-amp').value, 10) + 
-    parseInt(document.getElementById('blue-robot3-notes-amp').value, 10);
-
-    blueAlliance.teleop.notesSpeaker = 
-    parseInt(document.getElementById('blue-robot1-notes-speaker').value, 10) + 
-    parseInt(document.getElementById('blue-robot2-notes-speaker').value, 10) + 
-    parseInt(document.getElementById('blue-robot3-notes-speaker').value, 10);
-
-    blueAlliance.teleop.notesAmplified = 
-    parseInt(document.getElementById('blue-robot1-notes-speaker-amplified').value, 10) + 
-    parseInt(document.getElementById('blue-robot2-notes-speaker-amplified').value, 10) + 
-    parseInt(document.getElementById('blue-robot3-notes-speaker-amplified').value, 10);
-
-    blueAlliance.endgame.notesTrap = parseInt(document.getElementById('blue-notes-trap').value, 10);
-    [blueAlliance.spotlightCenter, blueAlliance.spotlightLeft, blueAlliance.spotlightRight] = [document.getElementById('blue-spotlight-center').checked, document.getElementById('blue-spotlight-left').checked, document.getElementById('blue-spotlight-right').checked];
-
-    blueAlliance.endgame.endPlacements = [document.getElementById('blue-robot1-position').options[document.getElementById('blue-robot1-position').selectedIndex].value, 
-    parseInt(document.getElementById('blue-robot2-position').options[document.getElementById('blue-robot3-position').selectedIndex].value, 10), 
-    parseInt(document.getElementById('blue-robot2-position').options[document.getElementById('blue-robot3-position').selectedIndex].value, 10)];
+document.querySelectorAll(".team").forEach((team) => {
+    team.addEventListener("change", () => {
+        blueAlliance.data.teams = [];
+        blueAlliance.data.teams.push(document.getElementById("blue-team1").value);
+        blueAlliance.data.teams.push(document.getElementById("blue-team2").value);
+        blueAlliance.data.teams.push(document.getElementById("blue-team3").value);
+        redAlliance.data.teams = [];
+        redAlliance.data.teams.push(document.getElementById("red-team1").value);
+        redAlliance.data.teams.push(document.getElementById("red-team2").value);
+        redAlliance.data.teams.push(document.getElementById("red-team3").value);
 
 
-    const totalNotes = blueAlliance.teleop.notesAmp + blueAlliance.teleop.notesSpeaker + blueAlliance.teleop.notesAmp + 
-    blueAlliance.auto.notesAmp + blueAlliance.auto.notesSpeaker;
+        console.log(document.getElementById("blue-team1").value);
+        console.log(blueAlliance);
+        console.log(redAlliance);
+    });
+});
 
-    if (totalNotes >= melody || (totalNotes >= coopMelody && blueAlliance.coopertition)) {blueAlliance.rankingPoints++; blueAlliance.melody = true;}
+const changeHandler = (input) => {
+    // Parse id to find property
+    const id = input.id.split("-");
+    console.log(id);
 
-    blueAlliance.auto.autoPoints = blueAlliance.auto.leaveCount * leave + blueAlliance.auto.notesAmp * autoAmp + blueAlliance.auto.notesSpeaker * autoSpeaker;
+        if(id[0] == "blue") {
+            // Blue alliance
+            if(id[2] == "auto") {
+                if(id[3] == "leave") {
+                    blueAlliance.data.auto.leave = input.checked
+                } else if(id[3] == "notes") {
+                    if(id[4] == "amp") {
+                        blueAlliance.data.auto.notesAmp += input.value;
+                    } else if(id[4] == "speaker") {
 
-    blueAlliance.teleop.teleopPoints = blueAlliance.teleop.notesAmp * teleAmp + blueAlliance.teleop.notesSpeaker * teleSpeaker + blueAlliance.teleop.notesAmplified * ampSpeaker;
+                    }
+                }
+            } else {
+                // Add to teleoperated section
 
-    const endgameScoring = [0, park, stage + spotlightBonus * blueAlliance.spotlightCenter, stage + spotlightBonus * blueAlliance.spotlightLeft, stage + spotlightBonus * blueAlliance.spotlightRight];
-
-    for (let i of blueAlliance.endgame.endPlacements) {blueAlliance.endgame.endgamePoints += endgameScoring[i]; if (i >= 2){blueAlliance.endgame.onstageCount++;}}
-    blueAlliance.endgame.endgamePoints += trap * blueAlliance.endgame.notesTrap;
-    if (blueAlliance.endgame.onstageCount >= ensembleRobots && (blueAlliance.endgame.endgamePoints >= ensemblePoints)){blueAlliance.rankingPoints++; blueAlliance.ensemble = true;}
-
-    blueAlliance.score = blueAlliance.auto.autoPoints + blueAlliance.teleop.teleopPoints + blueAlliance.endgame.endgamePoints;
-
-    for (let i in blueAlliance) {console.log(i, blueAlliance[i]);}
-    document.write(blueAlliance.score);
+            }
+        } else {
+            // Red alliance
+        }
 }
+
+const calcValues = () => {
+    document.querySelectorAll(".num-input").forEach((inputB) => {
+        changeHandler(inputB);
+    });
+    document.querySelectorAll(".checkbox").forEach((inputB) => {
+        changeHandler(inputB);
+    });
+    document.querySelectorAll(".select").forEach((inputB) => {
+        changeHandler(inputB);
+    });
+}
+
+document.querySelectorAll(".num-input").forEach((input) => {
+    input.addEventListener("change", () => {
+        // Reset stats for both alliances
+        blueAlliance.data = Alliance.blankData;
+        redAlliance.data = Alliance.blankData;
+        calcValues();
+    })
+});
+
+document.querySelectorAll(".checkbox").forEach((input) => {
+    input.addEventListener("change", () => {
+        blueAlliance.data = Alliance.blankData;
+        redAlliance.data = Alliance.blankData;
+        calcValues();
+    })
+});
+
+document.querySelectorAll(".select").forEach((input) => {
+    input.addEventListener("change", () => {
+        blueAlliance.data = Alliance.blankData;
+        redAlliance.data = Alliance.blankData;
+        calcValues();
+    })
+});
