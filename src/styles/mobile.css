@@ -6,7 +6,7 @@
     --red: rgb(251, 52, 52);
 }
 
-@media only screen and (max-width: 1400px) {
+@media only screen and (max-width: 768px) {
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -86,7 +86,7 @@ body {
     margin-left: 1vw;
     margin-right: 1vw;
     margin-bottom: 0.25vw;
-    font-size: 1vh;
+    font-size: 1.5vh;
     align-items: center;
 }
 

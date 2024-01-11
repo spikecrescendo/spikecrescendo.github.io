@@ -35,6 +35,11 @@ body {
     height: 100%;
     align-items: center;
     margin-top: 1vw;
+    transition: 0.25s ease;
+}
+
+#blue-alliance:hover, #red-alliance:hover {
+    filter: brightness(1.1);
 }
 
 #blue-teams, #red-teams {
@@ -70,6 +75,8 @@ body {
 
 .num-input {
     width: 1.5vw;
+    font-size: 0.7vw;
+    text-align: center;
 }
 
 .span {
@@ -81,6 +88,7 @@ body {
     margin-left: 1vw;
     margin-right: 1vw;
     margin-bottom: 0.25vw;
+    font-size: 1vw;
 }
 
 .span input {

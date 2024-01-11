@@ -35,6 +35,11 @@ body {
     height: 100%;
     align-items: center;
     margin-top: 1vw;
+    transition: 0.25s ease;
+}
+
+#blue-alliance:hover, #red-alliance:hover {
+    filter: brightness(1.1);
 }
 
 #blue-teams, #red-teams {

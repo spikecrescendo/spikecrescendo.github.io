@@ -13,9 +13,9 @@
         <main>
             <div id="blue-alliance">
                 <div id="blue-teams">
-                    <input class="team" placeholder="Team 1">
-                    <input class="team" placeholder="Team 2">
-                    <input class="team" placeholder="Team 3">
+                    <input id="blue-team1" class="team" placeholder="Team 1">
+                    <input id="blue-team2" class="team" placeholder="Team 2">
+                    <input id="blue-team3" class="team" placeholder="Team 3">
                 </div>
                 <div id="blue-inputs">
                     <h3 class="total" id="blue-auto-total">Autonomous Total:</h3>
@@ -23,8 +23,8 @@
                     <div class="blue-robots">
                         <div class="blue-robot1 robot">
                             <span class="span">
-                                <label for="blue-robot1-leave">Leave</label>
-                                <input id="blue-robot1-leave" class="checkbox" type="checkbox">
+                                <label for="blue-robot1-auto-leave">Leave</label>
+                                <input id="blue-robot1-auto-leave" class="checkbox" type="checkbox">
                             </span>
 
                             <span class="span">
@@ -143,7 +143,7 @@
                     <div class="blue-robots">
                         <div class="blue-robot1 robot">
                             <label for="blue-robot1-position">Position</label>
-                            <select id="blue-robot1-position">
+                            <select class="select" id="blue-robot1-position">
                                 <option>None</option>
                                 <option>Park</option>
                                 <option>Onstage - Center Stage</option>
@@ -159,7 +159,7 @@
 
                         <div class="blue-robot2 robot">
                             <label for="blue-robot2-position">Position</label>
-                            <select id="blue-robot2-position">
+                            <select class="select" id="blue-robot2-position">
                                 <option>None</option>
                                 <option>Park</option>
                                 <option>Onstage - Center Stage</option>
@@ -175,7 +175,7 @@
 
                         <div class="blue-robot3 robot">
                             <label for="blue-robot3-position">Position</label>
-                            <select id="blue-robot3-position">
+                            <select class="select" id="blue-robot3-position">
                                 <option>None</option>
                                 <option>Park</option>
                                 <option>Onstage - Center Stage</option>
@@ -191,13 +191,204 @@
                     </div>
                     <hr>
                     <h3 class="total">Ranking Points</h3>
+                    <span class="span nospecific">
+                        <label for="blue-melody">Melody</label>
+                        <input id="blue-melody" class="checkbox" type="checkbox">
+                    </span>
+                    <span class="span nospecific">
+                        <label for="blue-ensemble">Ensemble</label>
+                        <input id="blue-emsemble" class="checkbox" type="checkbox">
+                    </span>
                 </div>
             </div>
             <div id="red-alliance">
                 <div id="red-teams">
-                    <input class="team" placeholder="Team 1">
-                    <input class="team" placeholder="Team 2">
-                    <input class="team" placeholder="Team 3">
+                    <input id="red-team1" class="team" placeholder="Team 1">
+                    <input id="red-team2" class="team" placeholder="Team 2">
+                    <input id="red-team3" class="team" placeholder="Team 3">
+                </div>
+                <div id="red-inputs">
+                    <h3 class="total" id="red-auto-total">Autonomous Total:</h3>
+
+                    <div class="red-robots">
+                        <div class="red-robot1 robot">
+                            <span class="span">
+                                <label for="red-robot1-auto-leave">Leave</label>
+                                <input id="red-robot1-auto-leave" class="checkbox" type="checkbox">
+                            </span>
+
+                            <span class="span">
+                                <label for="red-robot1-auto-notes-amp">Notes (amp)</label>
+                                <input id="red-robot1-auto-notes-amp" class="num-input">
+                            </span>
+
+                            <span class="span">
+                                <label for=red-robot1-auto-notes-speaker">Notes (speaker)</label>
+                                <input id="red-robot1-auto-notes-speaker" class="num-input">
+                            </span>
+                        </div>
+
+                        <div class="red-robot2 robot">
+                            <span class="span">
+                                <label for="red-robot2-auto-leave">Leave</label>
+                                <input id="red-robot2-auto-leave" class="checkbox" type="checkbox">
+                            </span>
+
+                            <span class="span">
+                                <label for="red-robot2-auto-notes-amp">Notes (amp)</label>
+                                <input id="red-robot2-auto-notes-amp" class="num-input">
+                            </span>
+
+                            <span class="span">
+                                <label for=red-robot2-auto-notes-speaker">Notes (speaker)</label>
+                                <input id="red-robot2-auto-notes-speaker" class="num-input">
+                            </span>
+                        </div>
+
+                        <div class="blue-robot3 robot">
+                            <span class="span">
+                                <label for="red-robot3-auto-leave">Leave</label>
+                                <input id="red-robot3-auto-leave" class="checkbox" type="checkbox">
+                            </span>
+
+                            <span class="span">
+                                <label for="red-robot3-auto-notes-amp">Notes (amp)</label>
+                                <input id="red-robot3-auto-notes-amp" class="num-input">
+                            </span>
+
+                            <span class="span">
+                                <label for=red-robot3-auto-notes-speaker">Notes (speaker)</label>
+                                <input id="red-robot3-auto-notes-speaker" class="num-input">
+                            </span> 
+                        </div>
+                    </div>
+
+                    <hr>
+                    <h3 class="total" id="red-teleop-total">Teleoperated Total:</h3>
+                    <span class="span nospecific">
+                        <label for="red-coopertition">Coopertition Bonus</label>
+                        <input id="red-coopertition" class="checkbox" type="checkbox">
+                    </span>
+                    <br>
+                    <div class="red-robots">
+                        <div class="red-robot1 robot">
+                            <span class="span">
+                                <label for="red-robot1-notes-amp">Notes (amp)</label>
+                                <input id="red-robot1-notes-amp" class="num-input">
+                            </span>
+
+                            <span class="span">
+                                <label for="red-robot1-notes-speaker">Notes (speaker)</label>
+                                <input id="red-robot1-notes-speaker" class="num-input">
+                            </span>
+
+                            <span class="span">
+                                <label for="red-robot1-notes-speaker-amplified">Notes (amplified)</label>
+                                <input id="red-robot1-notes-speaker-amplified" class="num-input">
+                            </span>
+                        </div>
+
+                        <div class="red-robot2 robot">
+                            <span class="span">
+                                <label for="red-robot2-notes-amp">Notes (amp)</label>
+                                <input id="red-robot2-notes-amp" class="num-input">
+                            </span>
+
+                            <span class="span">
+                                <label for="red-robot2-notes-speaker">Notes (speaker)</label>
+                                <input id="red-robot2-notes-speaker" class="num-input">
+                            </span>
+
+                            <span class="span">
+                                <label for="red-robot2-notes-speaker-amplified">Notes (amplified)</label>
+                                <input id="red-robot2-notes-speaker-amplified" class="num-input">
+                            </span>
+                        </div>
+
+                        <div class="red-robot3 robot">
+                            <span class="span">
+                                <label for="red-robot3-notes-amp">Notes (amp)</label>
+                                <input id="red-robot3-notes-amp" class="num-input">
+                            </span>
+
+                            <span class="span">
+                                <label for="red-robot3-notes-speaker">Notes (speaker)</label>
+                                <input id="red-robot3-notes-speaker" class="num-input">
+                            </span>
+
+                            <span class="span">
+                                <label for="red-robot3-notes-speaker-amplified">Notes (amplified)</label>
+                                <input id="red-robot3-notes-speaker-amplified" class="num-input">
+                            </span>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <h3 class="total" id="red-endgame-total">Endgame Total: </h3>
+                    <span class="span nospecific">
+                        <label for="red-notes-trap">Notes (trap)</label>
+                        <input id="red-notes-trap" class="num-input">
+                    </span>
+                    <br>
+                    <div class="red-robots">
+                        <div class="red-robot1 robot">
+                            <label for="red-robot1-position">Position</label>
+                            <select class="select" id="red-robot1-position">
+                                <option>None</option>
+                                <option>Park</option>
+                                <option>Onstage - Center Stage</option>
+                                <option>Onstage - Left Stage</option>
+                                <option>Onstage - Right Stage</option>
+                            </select>
+                            <br>
+                            <span class="span">
+                                <label for="red-spotlight-center">Spotlight (center stage)</label>
+                                <input id="red-spotlight-center" class="checkbox" type="checkbox">
+                            </span>
+                        </div>
+
+                        <div class="red-robot2 robot">
+                            <label for="red-robot2-position">Position</label>
+                            <select class="select" id="red-robot2-position">
+                                <option>None</option>
+                                <option>Park</option>
+                                <option>Onstage - Center Stage</option>
+                                <option>Onstage - Left Stage</option>
+                                <option>Onstage - Right Stage</option>
+                            </select>
+                            <br>
+                            <span class="span">
+                                <label for="red-spotlight-left">Spotlight (left stage)</label>
+                                <input id="red-spotlight-left" class="checkbox" type="checkbox">
+                            </span>
+                        </div>
+
+                        <div class="red-robot3 robot">
+                            <label for="red-robot3-position">Position</label>
+                            <select class="select" id="red-robot3-position">
+                                <option>None</option>
+                                <option>Park</option>
+                                <option>Onstage - Center Stage</option>
+                                <option>Onstage - Left Stage</option>
+                                <option>Onstage - Right Stage</option>
+                            </select>
+                            <br>
+                            <span class="span">
+                                <label for="red-spotlight-right">Spotlight (right stage)</label>
+                                <input id="red-spotlight-right" class="checkbox" type="checkbox">
+                            </span>
+                        </div>
+                    </div>
+                    <hr>
+                    <h3 class="total">Ranking Points</h3>
+                    <span class="span nospecific">
+                        <label for="red-melody">Melody</label>
+                        <input id="red-melody" class="checkbox" type="checkbox">
+                    </span>
+                    <span class="span nospecific">
+                        <label for="red-ensemble">Ensemble</label>
+                        <input id="red-emsemble" class="checkbox" type="checkbox">
+                    </span>
                 </div>
             </div>
         </main>   
