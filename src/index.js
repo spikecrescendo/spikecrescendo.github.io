@@ -6,7 +6,7 @@ class Alliance {
             coopertition: false,
             rankingPoints: 0,
             auto: {
-                leave: false,
+                leave: 0,
                 notesAmp: 0,
                 notesSpeaker: 0
             },
@@ -78,7 +78,7 @@ const changeHandler = (input) => {
             // Blue alliance
             if(id[2] == "auto") {
                 if(id[3] == "leave") {
-                    blueAlliance.data.auto.leave = input.checked
+                    blueAlliance.data.auto.leave += input.checked;
                 } else if(id[3] == "notes") {
                     if(id[4] == "amp") {
                         blueAlliance.data.auto.notesAmp += input.value;
