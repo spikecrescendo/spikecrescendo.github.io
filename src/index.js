@@ -33,6 +33,34 @@ class Alliance {
         );
     }
 
+    get hasMelody() {
+        let notes = this.data.auto.notesAmp + this.data.auto.notesSpeaker + this.teleopTotal;
+        return (this.data.coopertition && notes >= RANKING_POINTS.COOPERTITION_MELODY) || notes >= RANKING_POINTS.MELODY;
+    }
+
+    get hasEnsemble() {
+        let numOnstage = this.data.endgame.centerStage + this.data.endgame.rightStage + this.data.endgame.leftStage;
+        return numOnstage >= RANKING_POINTS.ENSEMBLE_ROBOTS && this.endgameMP >= RANKING_POINTS.ENSEMBLE_POINTS;
+    }
+
+    get endgameMP() {
+        return (
+            this.data.endgame.park * MATCH_POINTS.PARK +
+            (this.data.endgame.centerStage + this.data.endgame.rightStage + this.data.endgame.leftStage) * MATCH_POINTS.ONSTAGE +
+            (
+                this.data.endgame.spotlightCenter * this.data.endgame.centerStage +
+                this.data.endgame.spotlightLeft * this.data.endgame.leftStage +
+                this.data.endgame.spotlightRight * this.data.endgame.rightStage
+            ) * MATCH_POINTS.SPOTLIGHT_BONUS +
+            this.harmonyCount * MATCH_POINTS.HARMONY +
+            this.data.endgame.notesTrap * MATCH_POINTS.TRAP
+        );
+    }
+
+    get harmonyCount() {
+        return Math.max(1, this.data.endgame.centerStage, this.data.endgame.rightStage, this.data.endgame.leftStage) - 1;
+    }
+
     static blankData = {
         teams: [],
         score: 0,
@@ -56,8 +84,7 @@ class Alliance {
             centerStage: 0,
             rightStage: 0,
             leftStage: 0,
-            park: 0,
-            stagePoints: 0
+            park: 0
         }
     }
 }
@@ -167,10 +194,8 @@ const changeHandler = (input) => {
         let isEnsemble = id[1] === "ensemble";
         if (isCoopertition) {
             allianceToModify.data.coopertition = input.checked;
-        } else if (isMelody) {
-            // todo
-        } else if (isEnsemble) {
-            // todo
+        } else if (isMelody || isEnsemble) {
+            allianceToModify.data.rankingPoints += input.checked;
         } else if (isPositionScore) {
             if(input.value === "Park"){
                 allianceToModify.data.endgame.park++;
@@ -181,7 +206,7 @@ const changeHandler = (input) => {
             let positionScored = id[2];
             allianceToModify.data.endgame["spotlight" + positionScored.capitalize()] = input.checked;
         } else if (isTrapScore) {
-            // todo
+            allianceToModify.data.endgame.notesTrap += parseInt(input.value);
         } else {
             let scoredInAmp = id[3] === "amp";
             let scoredInAmplifiedSpeaker = id.length === 5;
@@ -196,11 +221,26 @@ const changeHandler = (input) => {
     }
 }
 
+
 const calcValues = () => {
     blueAlliance.resetData();
     redAlliance.resetData();
     document.querySelectorAll(".num-input, .checkbox, .select").forEach(changeHandler);
+    document.getElementById("blue-melody").checked = blueAlliance.hasMelody;
+    document.getElementById("red-melody").checked = redAlliance.hasMelody;
+    document.getElementById("blue-ensemble").checked = blueAlliance.hasEnsemble;
+    document.getElementById("red-ensemble").checked = redAlliance.hasEnsemble;
+
+    // Update HTML headers
+    document.querySelector("#blue-auto-total").innerText = "Autonomous Total: " + blueAlliance.autoMP;
+    document.querySelector("#blue-teleop-total").innerText = "Teleoperated Total: " + blueAlliance.teleopMP;
+    document.querySelector("#blue-endgame-total").innerText = "Endgame Total: " + blueAlliance.endgameMP;
+
+    document.querySelector("#red-auto-total").innerText = "Autonomous Total: " + redAlliance.autoMP;
+    document.querySelector("#red-teleop-total").innerText = "Teleoperated Total: " + redAlliance.teleopMP;
+    document.querySelector("#red-endgame-total").innerText = "Endgame Total: " + redAlliance.endgameMP;
 }
+
 calcValues();
 
 document.querySelectorAll(".num-input, .checkbox, .select").forEach((input) => {
