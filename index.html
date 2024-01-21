@@ -14,11 +14,12 @@
             <label for="filename">Filename:</label>
             <input id="filename" placeholder="download.csv"></input>
             <button onclick="download()">Download as CSV</button><br/>
+            <button onclick="reset()">Reset data</button><br/>
             <div id="blue-alliance">
                 <div id="blue-teams">
-                    <input id="blue-team1" class="team" placeholder="Team 1">
-                    <input id="blue-team2" class="team" placeholder="Team 2">
-                    <input id="blue-team3" class="team" placeholder="Team 3">
+                    <input id="blue-team1" class="team" placeholder="Team 1" type="integer">
+                    <input id="blue-team2" class="team" placeholder="Team 2" type="integer">
+                    <input id="blue-team3" class="team" placeholder="Team 3" type="integer">
                 </div>
                 <div id="blue-inputs">
                     <h3 class="total" id="blue-auto-total">Autonomous Total:</h3>
@@ -32,12 +33,12 @@
 
                             <span class="span">
                                 <label for="blue-robot1-auto-notes-amp">Notes (amp)</label>
-                                <input id="blue-robot1-auto-notes-amp" class = "num-input" value = "0">
+                                <input id="blue-robot1-auto-notes-amp" class = "num-input" value = "0" type="integer">
                             </span>
 
                             <span class="span">
                                 <label for="blue-robot1-auto-notes-speaker">Notes (speaker)</label>
-                                <input id="blue-robot1-auto-notes-speaker" class = "num-input" value = "0">
+                                <input id="blue-robot1-auto-notes-speaker" class = "num-input" value = "0" type="integer">
                             </span> 
                         </div>
 
@@ -49,12 +50,12 @@
 
                             <span class="span">
                                 <label for="blue-robot2-auto-notes-amp">Notes (amp)</label>
-                                <input id="blue-robot2-auto-notes-amp" class = "num-input" value = "0">
+                                <input id="blue-robot2-auto-notes-amp" class = "num-input" value = "0" type="integer">
                             </span>
 
                             <span class="span">
                                 <label for="blue-robot2-auto-notes-speaker">Notes (speaker)</label>
-                                <input id="blue-robot2-auto-notes-speaker" class = "num-input" value = "0">
+                                <input id="blue-robot2-auto-notes-speaker" class = "num-input" value = "0" type="integer">
                             </span>
                         </div>
 
@@ -66,12 +67,12 @@
 
                             <span class="span">
                                 <label for="blue-robot3-auto-notes-amp">Notes (amp)</label>
-                                <input id="blue-robot3-auto-notes-amp" class = "num-input" value = "0">
+                                <input id="blue-robot3-auto-notes-amp" class = "num-input" value = "0" type="integer">
                             </span>
 
                             <span class="span">
                                 <label for="blue-robot3-auto-notes-speaker">Notes (speaker)</label>
-                                <input id="blue-robot3-auto-notes-speaker" class = "num-input" value = "0">
+                                <input id="blue-robot3-auto-notes-speaker" class = "num-input" value = "0" type="integer">
                             </span> 
                         </div>
                     </div>
@@ -87,51 +88,51 @@
                         <div class="blue-robot1 robot">
                             <span class="span">
                                 <label for="blue-robot1-notes-amp">Notes (amp)</label>
-                                <input id="blue-robot1-notes-amp" class = "num-input" value = "0">
+                                <input id="blue-robot1-notes-amp" class = "num-input" value = "0" type="integer">
                             </span>
 
                             <span class="span">
                                 <label for="blue-robot1-notes-speaker">Notes (speaker)</label>
-                                <input id="blue-robot1-notes-speaker" class = "num-input" value = "0">
+                                <input id="blue-robot1-notes-speaker" class = "num-input" value = "0" type="integer">
                             </span>
 
                             <span class="span">
                                 <label for="blue-robot1-notes-speaker-amplified">Notes (amplified)</label>
-                                <input id="blue-robot1-notes-speaker-amplified" class = "num-input" value = "0">
+                                <input id="blue-robot1-notes-speaker-amplified" class = "num-input" value = "0" type="integer">
                             </span>
                         </div>
 
                         <div class="blue-robot2 robot">
                             <span class="span">
                                 <label for="blue-robot2-notes-amp">Notes (amp)</label>
-                                <input id="blue-robot2-notes-amp" class = "num-input" value = "0">
+                                <input id="blue-robot2-notes-amp" class = "num-input" value = "0" type="integer">
                             </span>
 
                             <span class="span">
                                 <label for="blue-robot2-notes-speaker">Notes (speaker)</label>
-                                <input id="blue-robot2-notes-speaker" class = "num-input" value = "0">
+                                <input id="blue-robot2-notes-speaker" class = "num-input" value = "0" type="integer">
                             </span>
 
                             <span class="span">
                                 <label for="blue-robot2-notes-speaker-amplified">Notes (amplified)</label>
-                                <input id="blue-robot2-notes-speaker-amplified" class = "num-input" value = "0">
+                                <input id="blue-robot2-notes-speaker-amplified" class = "num-input" value = "0" type="integer">
                             </span>
                         </div>
 
                         <div class="blue-robot3 robot">
                             <span class="span">
                                 <label for="blue-robot3-notes-amp">Notes (amp)</label>
-                                <input id="blue-robot3-notes-amp" class = "num-input" value = "0">
+                                <input id="blue-robot3-notes-amp" class = "num-input" value = "0" type="integer">
                             </span>
 
                             <span class="span">
                                 <label for="blue-robot3-notes-speaker">Notes (speaker)</label>
-                                <input id="blue-robot3-notes-speaker" class = "num-input" value = "0">
+                                <input id="blue-robot3-notes-speaker" class = "num-input" value = "0" type="integer">
                             </span>
 
                             <span class="span">
                                 <label for="blue-robot3-notes-speaker-amplified">Notes (amplified)</label>
-                                <input id="blue-robot3-notes-speaker-amplified" class = "num-input" value = "0">
+                                <input id="blue-robot3-notes-speaker-amplified" class = "num-input" value = "0" type="integer">
                             </span>
                         </div>
                     </div>
@@ -140,7 +141,7 @@
                     <h3 class="total" id="blue-endgame-total">Endgame Total: </h3>
                     <span class="span nospecific">
                         <label for="blue-notes-trap">Notes (trap)</label>
-                        <input id="blue-notes-trap" class = "num-input" value = "0">
+                        <input id="blue-notes-trap" class = "num-input" value = "0" type="integer">
                     </span>
                     <br>
                     <div class="blue-robots">
@@ -206,9 +207,9 @@
             </div>
             <div id="red-alliance">
                 <div id="red-teams">
-                    <input id="red-team1" class="team" placeholder="Team 1">
-                    <input id="red-team2" class="team" placeholder="Team 2">
-                    <input id="red-team3" class="team" placeholder="Team 3">
+                    <input id="red-team1" class="team" placeholder="Team 1" type="integer">
+                    <input id="red-team2" class="team" placeholder="Team 2" type="integer">
+                    <input id="red-team3" class="team" placeholder="Team 3" type="integer">
                 </div>
                 <div id="red-inputs">
                     <h3 class="total" id="red-auto-total">Autonomous Total:</h3>
@@ -222,12 +223,12 @@
 
                             <span class="span">
                                 <label for="red-robot1-auto-notes-amp">Notes (amp)</label>
-                                <input id="red-robot1-auto-notes-amp" class = "num-input" value = "0">
+                                <input id="red-robot1-auto-notes-amp" class = "num-input" value = "0" type="integer">
                             </span>
 
                             <span class="span">
                                 <label for="red-robot1-auto-notes-speaker">Notes (speaker)</label>
-                                <input id="red-robot1-auto-notes-speaker" class = "num-input" value = "0">
+                                <input id="red-robot1-auto-notes-speaker" class = "num-input" value = "0" type="integer">
                             </span>
                         </div>
 
@@ -239,12 +240,12 @@
 
                             <span class="span">
                                 <label for="red-robot2-auto-notes-amp">Notes (amp)</label>
-                                <input id="red-robot2-auto-notes-amp" class = "num-input" value = "0">
+                                <input id="red-robot2-auto-notes-amp" class = "num-input" value = "0" type="integer">
                             </span>
 
                             <span class="span">
                                 <label for="red-robot2-auto-notes-speaker">Notes (speaker)</label>
-                                <input id="red-robot2-auto-notes-speaker" class = "num-input" value = "0">
+                                <input id="red-robot2-auto-notes-speaker" class = "num-input" value = "0" type="integer">
                             </span>
                         </div>
 
@@ -256,12 +257,12 @@
 
                             <span class="span">
                                 <label for="red-robot3-auto-notes-amp">Notes (amp)</label>
-                                <input id="red-robot3-auto-notes-amp" class = "num-input" value = "0">
+                                <input id="red-robot3-auto-notes-amp" class = "num-input" value = "0" type="integer">
                             </span>
 
                             <span class="span">
                                 <label for="red-robot3-auto-notes-speaker">Notes (speaker)</label>
-                                <input id="red-robot3-auto-notes-speaker" class = "num-input" value = "0">
+                                <input id="red-robot3-auto-notes-speaker" class = "num-input" value = "0" type="integer">
                             </span> 
                         </div>
                     </div>
@@ -277,51 +278,51 @@
                         <div class="red-robot1 robot">
                             <span class="span">
                                 <label for="red-robot1-notes-amp">Notes (amp)</label>
-                                <input id="red-robot1-notes-amp" class = "num-input" value = "0">
+                                <input id="red-robot1-notes-amp" class = "num-input" value = "0" type="integer">
                             </span>
 
                             <span class="span">
                                 <label for="red-robot1-notes-speaker">Notes (speaker)</label>
-                                <input id="red-robot1-notes-speaker" class = "num-input" value = "0">
+                                <input id="red-robot1-notes-speaker" class = "num-input" value = "0" type="integer">
                             </span>
 
                             <span class="span">
                                 <label for="red-robot1-notes-speaker-amplified">Notes (amplified)</label>
-                                <input id="red-robot1-notes-speaker-amplified" class = "num-input" value = "0">
+                                <input id="red-robot1-notes-speaker-amplified" class = "num-input" value = "0" type="integer">
                             </span>
                         </div>
 
                         <div class="red-robot2 robot">
                             <span class="span">
                                 <label for="red-robot2-notes-amp">Notes (amp)</label>
-                                <input id="red-robot2-notes-amp" class = "num-input" value = "0">
+                                <input id="red-robot2-notes-amp" class = "num-input" value = "0" type="integer">
                             </span>
 
                             <span class="span">
                                 <label for="red-robot2-notes-speaker">Notes (speaker)</label>
-                                <input id="red-robot2-notes-speaker" class = "num-input" value = "0">
+                                <input id="red-robot2-notes-speaker" class = "num-input" value = "0" type="integer">
                             </span>
 
                             <span class="span">
                                 <label for="red-robot2-notes-speaker-amplified">Notes (amplified)</label>
-                                <input id="red-robot2-notes-speaker-amplified" class = "num-input" value = "0">
+                                <input id="red-robot2-notes-speaker-amplified" class = "num-input" value = "0" type="integer">
                             </span>
                         </div>
 
                         <div class="red-robot3 robot">
                             <span class="span">
                                 <label for="red-robot3-notes-amp">Notes (amp)</label>
-                                <input id="red-robot3-notes-amp" class = "num-input" value = "0">
+                                <input id="red-robot3-notes-amp" class = "num-input" value = "0" type="integer">
                             </span>
 
                             <span class="span">
                                 <label for="red-robot3-notes-speaker">Notes (speaker)</label>
-                                <input id="red-robot3-notes-speaker" class = "num-input" value = "0">
+                                <input id="red-robot3-notes-speaker" class = "num-input" value = "0" type="integer">
                             </span>
 
                             <span class="span">
                                 <label for="red-robot3-notes-speaker-amplified">Notes (amplified)</label>
-                                <input id="red-robot3-notes-speaker-amplified" class = "num-input" value = "0">
+                                <input id="red-robot3-notes-speaker-amplified" class = "num-input" value = "0" type="integer">
                             </span>
                         </div>
                     </div>
@@ -330,7 +331,7 @@
                     <h3 class="total" id="red-endgame-total">Endgame Total: </h3>
                     <span class="span nospecific">
                         <label for="red-notes-trap">Notes (trap)</label>
-                        <input id="red-notes-trap" class = "num-input" value = "0">
+                        <input id="red-notes-trap" class = "num-input" value = "0" type="integer">
                     </span>
                     <br>
                     <div class="red-robots">

@@ -2,6 +2,10 @@ function deepcopy(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
 
+function sum(arr) {
+    return arr.reduce((a, b) => a + b);
+}
+
 String.prototype.capitalize = function () {
     return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase();});
 };
@@ -19,22 +23,22 @@ class Alliance {
 
     get autoMP() {
         return (
-            this.data.auto.leave * MATCH_POINTS.AUTO.LEAVE +
-            this.data.auto.notesAmp * MATCH_POINTS.AUTO.AMP +
-            this.data.auto.notesSpeaker * MATCH_POINTS.AUTO.SPEAKER
+            this.leaveCount * MATCH_POINTS.AUTO.LEAVE +
+            this.autoNotesAmp * MATCH_POINTS.AUTO.AMP +
+            this.autoNotesSpeaker * MATCH_POINTS.AUTO.SPEAKER
         );
     }
 
     get teleopMP() {
         return (
-            this.data.teleop.notesAmp * MATCH_POINTS.TELEOP.AMP +
-            this.data.teleop.notesSpeaker * MATCH_POINTS.TELEOP.SPEAKER +
-            this.data.teleop.notesAmplified * MATCH_POINTS.TELEOP.SPEAKER_AMPLIFIED
+            this.teleopNotesAmp * MATCH_POINTS.TELEOP.AMP +
+            this.teleopNotesSpeaker * MATCH_POINTS.TELEOP.SPEAKER +
+            this.teleopNotesAmplified * MATCH_POINTS.TELEOP.SPEAKER_AMPLIFIED
         );
     }
 
     get hasMelody() {
-        let notes = this.data.auto.notesAmp + this.data.auto.notesSpeaker + this.data.teleop.notesAmp + this.data.teleop.notesSpeaker + this.data.teleop.notesAmplified;
+        let notes = this.autoNotesAmp + this.autoNotesSpeaker + this.teleopNotesAmp + this.teleopNotesSpeaker + this.teleopNotesAmplified;
         return (this.data.coopertition && notes >= RANKING_POINTS.COOPERTITION_MELODY) || notes >= RANKING_POINTS.MELODY;
     }
 
@@ -61,20 +65,53 @@ class Alliance {
         return Math.max(1, this.data.endgame.centerStage, this.data.endgame.rightStage, this.data.endgame.leftStage) - 1;
     }
 
+    get leaveCount() {
+        return this.data.auto.leaveRobots.filter(x => x).length;
+    }
+
+    get autoNotesAmp() {return sum(this.data.auto.notesAmpRobots);}
+    get autoNotesSpeaker() {return sum(this.data.auto.notesSpeakerRobots);}
+    get teleopNotesAmp() {return sum(this.data.teleop.notesAmpRobots);}
+    get teleopNotesSpeaker() {return sum(this.data.teleop.notesSpeakerRobots);}
+    get teleopNotesAmplified() {return sum(this.data.teleop.notesAmplifiedRobots);}
+
+    get totalScore() {
+        return this.autoMP + this.teleopMP + this.endgameMP;
+    }
+
+    get coopertitionPoints() {
+        return +this.data.coopertition;
+    }
+
+    get rankingPoints() {
+        let result = 0;
+        if (this.hasMelody) result++;
+        if (this.hasEnsemble) result++;
+        let scoreDiff = this.totalScore - this.otherAlliance.totalScore;
+        if (scoreDiff > 0) result += RANKING_POINTS.WIN;
+        if (scoreDiff === 0) result += RANKING_POINTS.TIE;
+        return result;
+    }
+
+    get otherAlliance() {
+        if (this === blueAlliance) return redAlliance;
+        return blueAlliance;
+    }
+
     static blankData = {
         teams: [],
         score: 0,
         coopertition: false,
         rankingPoints: 0,
         auto: {
-            leave: 0,
-            notesAmp: 0,
-            notesSpeaker: 0
+            leaveRobots: [false, false, false],
+            notesAmpRobots: [0, 0, 0],
+            notesSpeakerRobots: [0, 0, 0]
         },
         teleop: {
-            notesAmp: 0,
-            notesSpeaker: 0,
-            notesAmplified: 0
+            notesAmpRobots: [0, 0, 0],
+            notesSpeakerRobots: [0, 0, 0],
+            notesAmplifiedRobots: [0, 0, 0]
         },
         endgame: {
             notesTrap: 0,
@@ -84,6 +121,7 @@ class Alliance {
             centerStage: 0,
             rightStage: 0,
             leftStage: 0,
+            positions: ["None", "None", "None"],
             park: 0
         }
     }
@@ -107,15 +145,48 @@ const download = () => {
         ["...", "Red Alliance", "Blue Alliance"],
         ["Robots"].concat(redAlliance.data.teams).concat(blueAlliance.data.teams)
     ].concat([
-        ["Auto Robots left", "auto", "leave"],
-        ["Auto Notes (Amp)", "auto", "notesAmp"],
-        ["Auto Notes (Speaker)", "auto", "notesSpeaker"],
-        ["Auto MP", null, "autoMP"],
-        ["Teleop Notes (Amp)", "teleop", "notesAmp"],
-        ["Teleop Notes (Speaker)", "teleop", "notesSpeaker"],
-        ["Teleop Notes (Amplified Speaker)", "teleop", "notesAmplified"],
-        ["Teleop MP", null, "teleopMP"]
-    ].map(x => [x[0]].concat(getKeys(...x.slice(1)))));
+        ["Autonomous", null, "autoMP"],
+        ["LEAVE - ROBOT 1", "auto", "leaveRobots", 0],
+        ["LEAVE - ROBOT 2", "auto", "leaveRobots", 1],
+        ["LEAVE - ROBOT 3", "auto", "leaveRobots", 2],
+        ["NOTES - AMP Robot 1", "auto", "notesAmpRobots", 0],
+        ["NOTES - SPEAKER Robot 1", "auto", "notesSpeakerRobots", 0],
+        ["NOTES - AMP Robot 2", "auto", "notesAmpRobots", 1],
+        ["NOTES - SPEAKER Robot 2", "auto", "notesSpeakerRobots", 1],
+        ["NOTES - AMP Robot 3", "auto", "notesAmpRobots", 2],
+        ["NOTES - SPEAKER Robot 3", "auto", "notesSpeakerRobots", 2],
+        ["Tele-operated", null, "teleopMP"],
+        ["COOPERTITION BONUS", "coopertition"],
+        ["NOTES - AMP Robot 1", "teleop", "notesAmpRobots", 0],
+        ["NOTES - SPEAKER Robot 1", "teleop", "notesSpeakerRobots", 0],
+        ["NOTES - SPEAKER - AMPLIFIED Robot 1", "teleop", "notesAmplifiedRobots", 0],
+        ["NOTES - AMP Robot 2", "teleop", "notesAmpRobots", 1],
+        ["NOTES - SPEAKER Robot 2", "teleop", "notesSpeakerRobots", 1],
+        ["NOTES - SPEAKER - AMPLIFIED Robot 2", "teleop", "notesAmplifiedRobots", 1],
+        ["NOTES - AMP Robot 3", "teleop", "notesAmpRobots", 2],
+        ["NOTES - SPEAKER Robot 3", "teleop", "notesSpeakerRobots", 2],
+        ["NOTES - SPEAKER - AMPLIFIED Robot 3", "teleop", "notesAmplifiedRobots", 2],
+        ["End Game", null, "endgameMP"],
+        ["NOTES - TRAP", "endgame", "notesTrap"],
+        ["ROBOT 1", "endgame", "positions", 0],
+        ["ROBOT 2", "endgame", "positions", 1],
+        ["ROBOT 3", "endgame", "positions", 2],
+        ["SPOTLIGHT - Center STAGE", "endgame", "spotlightCenter"],
+        ["SPOTLIGHT - STAGE Left", "endgame", "spotlightLeft"],
+        ["SPOTLIGHT - STAGE Right", "endgame", "spotlightRight"],
+        ["Center STAGE - ROBOTS", "endgame", "centerStage"],
+        ["STAGE Left - ROBOTS", "endgame", "leftStage"],
+        ["STAGE Right - ROBOTS", "endgame", "rightStage"],
+        "Ranking Points",
+        ["MELODY", null, "hasMelody"],
+        ["ENSEMBLE", null, "hasEnsemble"],
+        ["Final Score", null, "totalScore"],
+        ["Coopertition Points", null, "coopertitionPoints"],
+        ["Ranking Points", null, "rankingPoints"]
+    ].map(x => {
+        if (typeof x === "string") return [x];
+        return [x[0]].concat(getKeys(...x.slice(1)));
+    }));
     
     let csvText = csvData.map(row => row.join(",")).join("\n");
 
@@ -125,7 +196,15 @@ const download = () => {
     link.download = document.getElementById("filename").value.trim() || "download.csv";
     if (!link.download.endsWith(".csv")) link.download += ".csv";
     link.click();
-}
+};
+
+const reset = () => {
+    document.querySelectorAll("input[type=checkbox]").forEach(x => {x.checked = false;});
+    document.querySelectorAll("input[type=integer]").forEach(x => {x.value = 0;});
+    document.querySelectorAll("select").forEach(x => {x.value = "None";});
+    document.querySelectorAll(".team").forEach(x => {x.value = "";});
+    calcValues();
+};
 
 // MP Constants
 const MATCH_POINTS = {
@@ -151,7 +230,9 @@ const RANKING_POINTS = {
     MELODY: 18,
     COOPERTITION_MELODY: 15,
     ENSEMBLE_POINTS: 10,
-    ENSEMBLE_ROBOTS: 2
+    ENSEMBLE_ROBOTS: 2,
+    TIE: 1,
+    WIN: 2
 };
 
 function updateTeams() {
@@ -171,18 +252,20 @@ document.querySelectorAll(".team").forEach((team) => {
 const changeHandler = (input) => {
     // Parse id to find property
     const id = input.id.split("-");
+    if (input.type === "number" && input.value === "") input.value = 0;
     let allianceToModify = id[0] === "blue" ? blueAlliance : redAlliance;
     let isAuto = id[2] === "auto";
     if(isAuto) {
         let [_, robotNumber, __, leaveOrNotes, notesScorePosition] = id;
+        let robotIndex = parseInt(robotNumber[5]) - 1;
         let isLeave = leaveOrNotes === "leave";
         let isAmpScore = !isLeave && notesScorePosition === "amp";
         if(isLeave) {
-            allianceToModify.data.auto.leave += input.checked;
+            allianceToModify.data.auto.leaveRobots[robotIndex] = input.checked;
         } else if(isAmpScore) {
-            allianceToModify.data.auto.notesAmp += parseInt(input.value);
+            allianceToModify.data.auto.notesAmpRobots[robotIndex] += parseInt(input.value);
         } else {
-            allianceToModify.data.auto.notesSpeaker += parseInt(input.value);
+            allianceToModify.data.auto.notesSpeakerRobots[robotIndex] += parseInt(input.value);
         }
     } else {
         // Add to teleoperated section
@@ -197,6 +280,8 @@ const changeHandler = (input) => {
         } else if (isMelody || isEnsemble) {
             allianceToModify.data.rankingPoints += input.checked;
         } else if (isPositionScore) {
+            let robotIndex = parseInt(id[1][5]) - 1;
+            allianceToModify.data.endgame.positions[robotIndex] = input.value;
             if(input.value === "Park"){
                 allianceToModify.data.endgame.park++;
             } else if (input.value.startsWith("Onstage - ")) {
@@ -210,12 +295,13 @@ const changeHandler = (input) => {
         } else {
             let scoredInAmp = id[3] === "amp";
             let scoredInAmplifiedSpeaker = id.length === 5;
-            if (scoredInAmp){
-                allianceToModify.data.teleop.notesAmp += parseInt(input.value);
+            let robotIndex = parseInt(id[1][5]) - 1;
+            if (scoredInAmp) {
+                allianceToModify.data.teleop.notesAmpRobots[robotIndex] += parseInt(input.value);
             } else if (!scoredInAmplifiedSpeaker) {
-                allianceToModify.data.teleop.notesSpeaker += parseInt(input.value);
+                allianceToModify.data.teleop.notesSpeakerRobots[robotIndex] += parseInt(input.value);
             } else {
-                allianceToModify.data.teleop.notesAmplified += parseInt(input.value);
+                allianceToModify.data.teleop.notesAmplifiedRobots[robotIndex] += parseInt(input.value);
             }
         }
     }
@@ -243,6 +329,9 @@ const calcValues = () => {
 
 calcValues();
 
+document.querySelectorAll("input[type=integer]").forEach(input => {
+    input.addEventListener("change", () => {if (isNaN(+input.value)) input.value = input.classList.contains("team") ? "" : 0;});
+})
 document.querySelectorAll(".num-input, .checkbox, .select").forEach((input) => {
     input.addEventListener("change", calcValues);
 });
