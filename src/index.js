@@ -34,7 +34,7 @@ class Alliance {
     }
 
     get hasMelody() {
-        let notes = this.data.auto.notesAmp + this.data.auto.notesSpeaker + this.teleopTotal;
+        let notes = this.data.auto.notesAmp + this.data.auto.notesSpeaker + this.data.teleop.notesAmp + this.data.teleop.notesSpeaker + this.data.teleop.notesAmplified;
         return (this.data.coopertition && notes >= RANKING_POINTS.COOPERTITION_MELODY) || notes >= RANKING_POINTS.MELODY;
     }
 
