@@ -1,35 +1,36 @@
+function deepcopy(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
+
+String.prototype.capitalize = function () {
+    return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase();});
+};
+
 class Alliance {
     constructor() {
-        this.data = {
-            teams: [],
-            score: 0,
-            coopertition: false,
-            rankingPoints: 0,
-            auto: {
-                leave: 0,
-                notesAmp: 0,
-                notesSpeaker: 0,
-                autoMP: 0
-            },
-            teleop: {
-                notesAmp: 0,
-                notesSpeaker: 0,
-                notesAmplified: 0,
-                teleopMP: 0
-            },
-            endgame: {
-                notesTrap: 0,
-                spotlightCenter: false,
-                spotlightLeft: false,
-                spotlightRight: false,
-                centerStage: 0,
-                rightStage: 0,
-                leftStage: 0,
-                park: 0,
-                stagePoints: 0
-                
-            }
-        }
+        this.resetData();
+    }
+
+    resetData() {
+        let teams = deepcopy(this.data?.teams ?? []);
+        this.data = deepcopy(Alliance.blankData);
+        this.data.teams = teams;
+    }
+
+    get autoMP() {
+        return (
+            this.data.auto.leave * MATCH_POINTS.AUTO.LEAVE +
+            this.data.auto.notesAmp * MATCH_POINTS.AUTO.AMP +
+            this.data.auto.notesSpeaker * MATCH_POINTS.AUTO.SPEAKER
+        );
+    }
+
+    get teleopMP() {
+        return (
+            this.data.teleop.notesAmp * MATCH_POINTS.TELEOP.AMP +
+            this.data.teleop.notesSpeaker * MATCH_POINTS.TELEOP.SPEAKER +
+            this.data.teleop.notesAmplified * MATCH_POINTS.TELEOP.SPEAKER_AMPLIFIED
+        );
     }
 
     static blankData = {
@@ -40,14 +41,12 @@ class Alliance {
         auto: {
             leave: 0,
             notesAmp: 0,
-            notesSpeaker: 0,
-            autoMP: 0
+            notesSpeaker: 0
         },
         teleop: {
             notesAmp: 0,
             notesSpeaker: 0,
-            notesAmplified: 0,
-            teleopMP: 0
+            notesAmplified: 0
         },
         endgame: {
             notesTrap: 0,
@@ -66,172 +65,150 @@ class Alliance {
 let blueAlliance = new Alliance();
 let redAlliance = new Alliance();
 
+// Download data
+const download = () => {
+    function getKeys(...k) {
+        if (k[0] === null) k = k.slice(1);
+        else k = ["data"].concat(k);
+        let output = [redAlliance, blueAlliance];
+        for (let kp of k) {
+            output = output.map(x => x[kp]);
+        }
+        return output;
+    }
+    let csvData = [
+        ["...", "Red Alliance", "Blue Alliance"],
+        ["Robots"].concat(redAlliance.data.teams).concat(blueAlliance.data.teams)
+    ].concat([
+        ["Auto Robots left", "auto", "leave"],
+        ["Auto Notes (Amp)", "auto", "notesAmp"],
+        ["Auto Notes (Speaker)", "auto", "notesSpeaker"],
+        ["Auto MP", null, "autoMP"],
+        ["Teleop Notes (Amp)", "teleop", "notesAmp"],
+        ["Teleop Notes (Speaker)", "teleop", "notesSpeaker"],
+        ["Teleop Notes (Amplified Speaker)", "teleop", "notesAmplified"],
+        ["Teleop MP", null, "teleopMP"]
+    ].map(x => [x[0]].concat(getKeys(...x.slice(1)))));
+    
+    let csvText = csvData.map(row => row.join(",")).join("\n");
+
+    let encodedURI = "data:application/octet-stream," + encodeURI(csvText);
+    let link = document.createElement("a");
+    link.href = encodedURI;
+    link.download = document.getElementById("filename").value.trim() || "download.csv";
+    if (!link.download.endsWith(".csv")) link.download += ".csv";
+    link.click();
+}
+
 // MP Constants
-const autoAmp = 2; const autoSpeaker = 5; const leave = 2;
-const teleopAmp = 1; const teleopSpeaker = 2; const teleopSpeakerAmplified = 5;
-const park = 1; const onstage = 3; const spotlightBonus = 1; const harmony = 2; const trap = 5;
+const MATCH_POINTS = {
+    AUTO: {
+        AMP: 2,
+        SPEAKER: 5,
+        LEAVE: 2
+    },
+    TELEOP: {
+        AMP: 1,
+        SPEAKER: 2,
+        SPEAKER_AMPLIFIED: 5
+    },
+    PARK: 1,
+    ONSTAGE: 3,
+    SPOTLIGHT_BONUS: 1,
+    HARMONY: 2,
+    TRAP: 5
+};
+
 // RP Constants
-const melody = 18; const coopertitionMelody = 15; const ensemblePoints = 10; const ensembleRobots = 2;
+const RANKING_POINTS = {
+    MELODY: 18,
+    COOPERTITION_MELODY: 15,
+    ENSEMBLE_POINTS: 10,
+    ENSEMBLE_ROBOTS: 2
+};
+
+function updateTeams() {
+    blueAlliance.data.teams = [];
+    redAlliance.data.teams = [];
+    for (let i = 1; i <= 3; i++) {
+        blueAlliance.data.teams.push(document.getElementById("blue-team" + i).value);
+        redAlliance.data.teams.push(document.getElementById("red-team" + i).value);
+    }
+}
+updateTeams();
 
 document.querySelectorAll(".team").forEach((team) => {
-    team.addEventListener("change", () => {
-        blueAlliance.data.teams = [];
-        blueAlliance.data.teams.push(document.getElementById("blue-team1").value);
-        blueAlliance.data.teams.push(document.getElementById("blue-team2").value);
-        blueAlliance.data.teams.push(document.getElementById("blue-team3").value);
-        redAlliance.data.teams = [];
-        redAlliance.data.teams.push(document.getElementById("red-team1").value);
-        redAlliance.data.teams.push(document.getElementById("red-team2").value);
-        redAlliance.data.teams.push(document.getElementById("red-team3").value);
-
-
-        console.log(document.getElementById("blue-team1").value);
-        console.log(blueAlliance);
-        console.log(redAlliance);
-    });
+    team.addEventListener("change", updateTeams);
 });
 
 const changeHandler = (input) => {
     // Parse id to find property
     const id = input.id.split("-");
-    console.log(id);
-        if(id[0] == "blue") {
-            // Blue alliance
-            if(id[2] == "auto") {
-                if(id[3] == "leave") {
-                    blueAlliance.data.auto.leave += input.checked;
-                } else if(id[3] == "notes") {
-                    if(id[4] == "amp") {
-                        blueAlliance.data.auto.notesAmp += parseInt(input.value);
-                    } else if(id[4] == "speaker") {
-                        blueAlliance.data.auto.notesSpeaker += parseInt(input.value);
-                    }
-                }
-            } else {
-                // Add to teleoperated section
-                if (id[1] == "coopertition"){
-                    blueAlliance.data.coopertition = input.checked;
-                } else if (id[2] == "position"){
-                    if(input.value == "Park"){
-                        blueAlliance.data.endgame.park++;
-                    } else if (input.value == "Onstage - Center Stage"){
-                        blueAlliance.data.endgame.centerStage++;
-                    } else if (input.value == "Onstage - Right Stage"){
-                        blueAlliance.data.endgame.rightStage++;
-                    } else if (input.value == "Onstage - Left   "){
-                        blueAlliance.data.endgame.leftStage++;
-                    }
-                } else if (id[1] == "spotlight"){
-                    if (id[2] == "center"){
-                        blueAlliance.data.endgame.spotlightCenter = input.checked;
-                    } else if (id[2] == "right"){
-                        blueAlliance.data.endgame.spotlightRight = input.checked;
-                    } else {
-                        blueAlliance.data.endgame.spotlightLeft = input.checked;
-                    }
-                } else {
-                    if (id[3] == "amp"){
-                        blueAlliance.data.teleop.notesAmp += parseInt(input.value);
-                    } else if (id[3] == "speaker"){
-                        if (id.length == 4){
-                            blueAlliance.data.teleop.notesSpeaker += parseInt(input.value);
-                        } else {
-                            blueAlliance.data.teleop.notesAmplified += parseInt(input.value);
-                        }
-                    } 
-                }
-            }
+    let allianceToModify = id[0] === "blue" ? blueAlliance : redAlliance;
+    let isAuto = id[2] === "auto";
+    if(isAuto) {
+        let [_, robotNumber, __, leaveOrNotes, notesScorePosition] = id;
+        let isLeave = leaveOrNotes === "leave";
+        let isAmpScore = !isLeave && notesScorePosition === "amp";
+        if(isLeave) {
+            allianceToModify.data.auto.leave += input.checked;
+        } else if(isAmpScore) {
+            allianceToModify.data.auto.notesAmp += parseInt(input.value);
         } else {
-            // Red alliance
-            if(id[2] == "auto") {
-                if(id[3] == "leave") {
-                    redAlliance.data.auto.leave += input.checked;
-                } else if(id[3] == "notes") {
-                    if(id[4] == "amp") {
-                        redAlliance.data.auto.notesAmp += parseInt(input.value);
-                    } else if(id[4] == "speaker") {
-                        redAlliance.data.auto.notesSpeaker += parseInt(input.value);
-                    }
-                }
+            allianceToModify.data.auto.notesSpeaker += parseInt(input.value);
+        }
+    } else {
+        // Add to teleoperated section
+        let isCoopertition = id[1] === "coopertition";
+        let isPositionScore = id[2] === "position";
+        let isSpotlightScore = id[1] === "spotlight";
+        let isTrapScore = id[2] === "trap";
+        let isMelody = id[1] === "melody";
+        let isEnsemble = id[1] === "ensemble";
+        if (isCoopertition) {
+            allianceToModify.data.coopertition = input.checked;
+        } else if (isMelody) {
+            // todo
+        } else if (isEnsemble) {
+            // todo
+        } else if (isPositionScore) {
+            if(input.value === "Park"){
+                allianceToModify.data.endgame.park++;
+            } else if (input.value.startsWith("Onstage - ")) {
+                allianceToModify.data.endgame[input.value.slice(10, -6).toLowerCase() + "Stage"]++;
+            }
+        } else if (isSpotlightScore){
+            let positionScored = id[2];
+            allianceToModify.data.endgame["spotlight" + positionScored.capitalize()] = input.checked;
+        } else if (isTrapScore) {
+            // todo
+        } else {
+            let scoredInAmp = id[3] === "amp";
+            let scoredInAmplifiedSpeaker = id.length === 5;
+            if (scoredInAmp){
+                allianceToModify.data.teleop.notesAmp += parseInt(input.value);
+            } else if (!scoredInAmplifiedSpeaker) {
+                allianceToModify.data.teleop.notesSpeaker += parseInt(input.value);
             } else {
-                // Add to teleoperated section
-                if (id[1] == "coopertition"){
-                    redAlliance.data.coopertition = input.checked;
-                } else if (id[2] == "position"){
-                    if(input.value == "Park"){
-                        redAlliance.data.endgame.park++;
-                    } else if (input.value == "Onstage - Center Stage"){
-                        redAlliance.data.endgame.centerStage++;
-                    } else if (input.value == "Onstage - Right Stage"){
-                        redAlliance.data.endgame.rightStage++;
-                    } else if (input.value == "Onstage - Left   "){
-                        redAlliance.data.endgame.leftStage++;
-                    }
-                } else if (id[1] == "spotlight"){
-                    if (id[2] == "center"){
-                        redAlliance.data.endgame.spotlightCenter = input.checked;
-                    } else if (id[2] == "right"){
-                        redAlliance.data.endgame.spotlightRight = input.checked;
-                    } else {
-                        redAlliance.data.endgame.spotlightLeft = input.checked;
-                    }
-                } else {
-                    if (id[3] == "amp"){
-                        redAlliance.data.teleop.notesAmp += parseInt(input.value);
-                    } else if (id[3] == "speaker"){
-                        if (id.length == 4){
-                            redAlliance.data.teleop.notesSpeaker += parseInt(input.value);
-                        } else {
-                            redAlliance.data.teleop.notesAmplified += parseInt(input.value);
-                        }
-                    } 
-                }
+                allianceToModify.data.teleop.notesAmplified += parseInt(input.value);
             }
         }
-    
+    }
 }
 
 const calcValues = () => {
-    document.querySelectorAll(".num-input").forEach((inputB) => {
-        changeHandler(inputB);
-    });
-    document.querySelectorAll(".checkbox").forEach((inputB) => {
-        changeHandler(inputB);
-    });
-    document.querySelectorAll(".select").forEach((inputB) => {
-        changeHandler(inputB);
-    });
+    blueAlliance.resetData();
+    redAlliance.resetData();
+    document.querySelectorAll(".num-input, .checkbox, .select").forEach(changeHandler);
 }
+calcValues();
 
-const convertToMP = () => {
-    blueAlliance.data.auto.autoMP = leave * blueAlliance.data.auto.leave + 
-    autoAmp * blueAlliance.data.auto.notesAmp + autoSpeaker * blueAlliance.data.auto.notesSpeaker;
-    
-}
-
-document.querySelectorAll(".num-input").forEach((input) => {
-    input.addEventListener("change", () => {
-        // Reset stats for both alliances
-        blueAlliance.data = JSON.parse(JSON.stringify(Alliance.blankData));
-        redAlliance.data = JSON.parse(JSON.stringify(Alliance.blankData));
-        calcValues();
-        console.warn(redAlliance.data)
-    })
-    
+document.querySelectorAll(".num-input, .checkbox, .select").forEach((input) => {
+    input.addEventListener("change", calcValues);
 });
 
-document.querySelectorAll(".checkbox").forEach((input) => {
-    input.addEventListener("change", () => {
-        blueAlliance.data = JSON.parse(JSON.stringify(Alliance.blankData));
-        redAlliance.data = JSON.parse(JSON.stringify(Alliance.blankData));
-        calcValues();
-    })
-});
-
-document.querySelectorAll(".select").forEach((input) => {
-    input.addEventListener("change", () => {
-        blueAlliance.data = JSON.parse(JSON.stringify(Alliance.blankData));
-        redAlliance.data = JSON.parse(JSON.stringify(Alliance.blankData));
-        calcValues();
-    })
+document.querySelectorAll("#blue-coopertition, #red-coopertition").forEach(coopertition => {
+    coopertition.addEventListener("input", e => {
+        document.querySelectorAll("#blue-coopertition, #red-coopertition").forEach(x => {x.checked = e.target.checked;});
+    });
 });
