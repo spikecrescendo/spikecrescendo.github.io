@@ -4,6 +4,7 @@
     --text-color: white;
     --blue: rgb(0, 136, 255);
     --red: rgb(251, 52, 52);
+    --neutral: rgb(128, 128, 128);
 }
 
 input::-webkit-outer-spin-button,
@@ -35,7 +36,7 @@ body {
     padding-left: 0.2vw;
 }
 
-#blue-alliance, #red-alliance {
+#blue-alliance, #red-alliance, #match-info {
     display: inline-flex;
     width: 40vw;
     flex-direction: column;
@@ -47,7 +48,13 @@ body {
     transition: 0.25s ease;
 }
 
-#blue-alliance:hover, #red-alliance:hover {
+#match-info {
+    width: 80% !important;
+    height: 15% !important;
+    background-color: var(--neutral);
+}
+
+#blue-alliance:hover, #red-alliance:hover, #match-info:hover {
     filter: brightness(1.1);
 }
 

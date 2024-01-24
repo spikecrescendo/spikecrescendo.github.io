@@ -186,7 +186,11 @@ const download = () => {
     ].map(x => {
         if (typeof x === "string") return [x];
         return [x[0]].concat(getKeys(...x.slice(1)));
-    }));
+    })).concat([
+        ["Match Type", document.getElementById("match-type").value],
+        ["Match Number", document.getElementById("match-number").value],
+        ["Competition Type", document.getElementById("competition-type").value]
+    ]);
     
     let csvText = csvData.map(row => row.join(",")).join("\n");
 
@@ -325,6 +329,21 @@ const calcValues = () => {
     document.querySelector("#red-auto-total").innerText = "Autonomous Total: " + redAlliance.autoMP;
     document.querySelector("#red-teleop-total").innerText = "Teleoperated Total: " + redAlliance.teleopMP;
     document.querySelector("#red-endgame-total").innerText = "Endgame Total: " + redAlliance.endgameMP;
+
+    const numRobots = num => `${num} robot${num === 1 ? "" : "s"}`;
+    document.getElementById("blue-robots-center").innerText = `${numRobots(blueAlliance.data.endgame.centerStage)} on Center STAGE`;
+    document.getElementById("red-robots-center").innerText = `${numRobots(redAlliance.data.endgame.centerStage)} on Center STAGE`;
+    document.getElementById("blue-robots-left").innerText = `${numRobots(blueAlliance.data.endgame.leftStage)} on STAGE Left`;
+    document.getElementById("red-robots-left").innerText = `${numRobots(redAlliance.data.endgame.leftStage)} on STAGE Left`;
+    document.getElementById("blue-robots-right").innerText = `${numRobots(blueAlliance.data.endgame.rightStage)} on STAGE Right`;
+    document.getElementById("red-robots-right").innerText = `${numRobots(redAlliance.data.endgame.rightStage)} on STAGE Right`;
+
+    document.getElementById("blue-mp-total").innerText = blueAlliance.totalScore;
+    document.getElementById("red-mp-total").innerText = redAlliance.totalScore;
+    document.getElementById("blue-co-total").innerText = blueAlliance.coopertitionPoints;
+    document.getElementById("red-co-total").innerText = redAlliance.coopertitionPoints;
+    document.getElementById("blue-rp-total").innerText = blueAlliance.rankingPoints;
+    document.getElementById("red-rp-total").innerText = redAlliance.rankingPoints;
 }
 
 calcValues();

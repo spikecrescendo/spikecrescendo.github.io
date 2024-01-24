@@ -15,6 +15,27 @@
             <input id="filename" placeholder="download.csv"></input>
             <button onclick="download()">Download as CSV</button><br/>
             <button onclick="reset()">Reset data</button><br/>
+            <div id="match-info">
+                <div>
+                    <label for="match-type">Match type:</label>
+                    <select class="select" id="match-type">
+                        <option>Practice</option>
+                        <option>Qualification</option>
+                        <option>Playoffs</option>
+                    </select>
+                </div><div>
+                    <label for="match-number">Match number:</label>
+                    <input id="match-number" class="num-input" value="1" type="integer">
+                </div><div>
+                    <label for="competition-type">Competition:</label>
+                    <select class="select" id="competition-type">
+                        <option>Allentown</option>
+                        <option>Montgomery</option>
+                        <option>MAR Champs</option>
+                        <option>Worlds</option>
+                    </select>
+                </div>
+            </div><br/>
             <div id="blue-alliance">
                 <div id="blue-teams">
                     <input id="blue-team1" class="team" placeholder="Team 1" type="integer">
@@ -159,6 +180,8 @@
                                 <label for="blue-spotlight-center">Spotlight (center stage)</label>
                                 <input id="blue-spotlight-center" class="checkbox" type="checkbox">
                             </span>
+                            <br>
+                            <h3 id="blue-robots-center">0 robots on Center STAGE</h3>
                         </div>
 
                         <div class="blue-robot2 robot">
@@ -175,6 +198,8 @@
                                 <label for="blue-spotlight-left">Spotlight (left stage)</label>
                                 <input id="blue-spotlight-left" class="checkbox" type="checkbox">
                             </span>
+                            <br>
+                            <h3 id="blue-robots-left">0 robots on STAGE Left</h3>
                         </div>
 
                         <div class="blue-robot3 robot">
@@ -191,6 +216,8 @@
                                 <label for="blue-spotlight-right">Spotlight (right stage)</label>
                                 <input id="blue-spotlight-right" class="checkbox" type="checkbox">
                             </span>
+                            <br>
+                            <h3 id="blue-robots-right">0 robots on STAGE Right</h3>
                         </div>
                     </div>
                     <hr>
@@ -203,6 +230,9 @@
                         <label for="blue-ensemble">Ensemble</label>
                         <input id="blue-ensemble" class="checkbox" type="checkbox" disabled>
                     </span>
+                    <h3 class="total">Match Points: <span id="blue-mp-total">0</span></h3>
+                    <h3 class="total">Coopertition Points: <span id="blue-co-total">0</span></h3>
+                    <h3 class="total">Ranking Points: <span id="blue-rp-total">0</span></h3>
                 </div>
             </div>
             <div id="red-alliance">
@@ -349,6 +379,8 @@
                                 <label for="red-spotlight-center">Spotlight (center stage)</label>
                                 <input id="red-spotlight-center" class="checkbox" type="checkbox">
                             </span>
+                            <br>
+                            <h3 id="red-robots-center">0 robots on Center STAGE</h3>
                         </div>
 
                         <div class="red-robot2 robot">
@@ -365,6 +397,8 @@
                                 <label for="red-spotlight-left">Spotlight (left stage)</label>
                                 <input id="red-spotlight-left" class="checkbox" type="checkbox">
                             </span>
+                            <br>
+                            <h3 id="red-robots-left">0 robots on STAGE Left</h3>
                         </div>
 
                         <div class="red-robot3 robot">
@@ -381,6 +415,8 @@
                                 <label for="red-spotlight-right">Spotlight (right stage)</label>
                                 <input id="red-spotlight-right" class="checkbox" type="checkbox">
                             </span>
+                            <br>
+                            <h3 id="red-robots-right">0 robots on STAGE Right</h3>
                         </div>
                     </div>
                     <hr>
@@ -393,6 +429,9 @@
                         <label for="red-ensemble">Ensemble</label>
                         <input id="red-ensemble" class="checkbox" type="checkbox" disabled>
                     </span>
+                    <h3 class="total">Match Points: <span id="red-mp-total">0</span></h3>
+                    <h3 class="total">Coopertition Points: <span id="red-co-total">0</span></h3>
+                    <h3 class="total">Ranking Points: <span id="red-rp-total">0</span></h3>
                 </div>
             </div>
         </main>   
